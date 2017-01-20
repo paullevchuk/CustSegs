@@ -21,7 +21,7 @@
 #' @param seed Integer. Starting set.seed value for this run.
 #' @param plotme Logical. Should plot be produced as side-effect?
 #' @return A list(best, sizes, peak_at, tries)
-fc_rclust <- function(x, k, fc_cont, nrep=100, fc_family,
+fc_rclust <- function(x, k, fc_cont, nrep=100, family = kccaFamily(dist = distCor),
                       verbose=FALSE, FUN = kcca, seed=1234, plotme=TRUE){
   num_clusters <- k
   fc_seed = seed
@@ -30,7 +30,7 @@ fc_rclust <- function(x, k, fc_cont, nrep=100, fc_family,
     fc_seed <- fc_seed + 1
     set.seed(fc_seed)
     cli <- flexclust::kcca(x, k, save.data = TRUE,
-                           control = fc_cont, family = kccaFamily(fc_family))
+                           control = fc_cont, family = family)
     cli.re <- CustSegs::fc_reorder(cli, orderby = "decending size")
     cli_info <- cli.re@clusinfo %>%
       dplyr::mutate(clust_num = row_number(),
